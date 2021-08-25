@@ -67,25 +67,48 @@ def image():
         =========''']
     return DATA
 
+def input_letter(letters):
+    while True:
+        try:
+            letter = input("\nIngrese una letra: ")
+            if not letter.isalpha():
+                raise ValueError("\nTienes que ingresar una letra..")
+            letter = letter[0]
+            letter = letter.lower()
+            if letter in letters:
+                raise ValueError("\nYa ingresaste esa letra, Ingrese otra")
+            
+            return letter
+        except ValueError as ve:
+            print(ve)
 
-def playing(player):
+
+def run():
+    introduction()
+    player = input("\nIngrese su alias: ")
+    
     graph = image()
 
+    #OJO: Colocar el data.txt en una carpea archivos
     with open("./archivos/data.txt", "r") as f:
         word = f.readlines()[random.randint(1, 171)]
         word = word.strip()
     word_clave = ["_" for i in range(len(word))]
+
     lives = 0
-    while lives <= 6:
+    letter_enter = []
+    while lives < 6:
         win = False
         os.system("clear")
         print(f"HOLA {player}, TE ESTAS JUGANDO LA VIDA")
+        print(f"\n\t\tLives: {6-lives}")
         print(graph[lives])
         print("  ¿Adivinarás la palabra?")
         print("\t"+"".join(word_clave))
-        letter = input("\nIngrese un letra: ")
-        letter = letter.lower()
-        
+        print("\nLetras Ingresadas: "+" - ".join(letter_enter))
+        letter = input_letter(letter_enter)
+        letter_enter.append(letter)
+
         for x in range(len(word)):
             if letter == word[x]:
                 word_clave[x] = word[x]
@@ -100,19 +123,19 @@ def playing(player):
             break
     if win:
         os.system("clear")
-        print("FELICIDADES GANASTE")
-        print(f"\nLa palabra era {word}")
+        print(f"HAS SALVADO TU VIDA {player}!!!")
+        print(f"\n\t\tLives: {6-lives}")
+        print(graph[lives])
+        print(f'\t"{word}"')
+        print("\nFelicitaciones y Adios...")
     else:
-        print("MORISTE AHORACADO ....")
-        print(f"\nLa palabra era {word}")
-    
-
-def run():
-    introduction()
-    player = input("\nIngrese su alias: ")
-    playing(player)
-
-
+        os.system("clear")
+        print(f"{player} LAMENTABLEMENTE TE AUTOAHORCARSTE :( !!!")
+        print(f"\n\t\tLives: {6-lives}")
+        print(graph[lives])
+        print("\t"+"".join(word_clave))
+        print("\nBuena suerte a la próxima...")
+        print(f'\nLa palabra era "{word}"')
 
 if __name__=='__main__':
     run()
