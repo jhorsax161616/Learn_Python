@@ -5,9 +5,9 @@ class Node():
 
 head = None
 
-for i in range(1, 8):
+""" for i in range(1, 8):
     head = Node(i, head)
 
 while head != None:
     print(head.data)
-    head = head.next
+    head = head.next """
